@@ -1,5 +1,5 @@
-from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup, filters
-from telegram.ext import Application, CommandHandler, MessageHandler, CallbackContext
+from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup
+from telegram.ext import Application, CommandHandler, MessageHandler, filters, CallbackContext
 
 # Grup kimliğini tanımla (örneğin -1002188591527)
 GROUP_CHAT_ID = -1002188591527  # Buraya grup kimliğini ekleyin
@@ -30,7 +30,7 @@ async def site_command(update: Update, context: CallbackContext):
 # Ana fonksiyon
 def main():
     # Bot tokenini buraya ekle
-    TOKEN = '8174146834:AAFjiRmw1-2QBpL_E4YXWKhNywtTWPKnYtE'
+    TOKEN = 'YOUR BOT TOKEN HERE'
 
     # Botu oluştur
     application = Application.builder().token(TOKEN).build()
