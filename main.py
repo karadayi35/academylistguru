@@ -30,7 +30,7 @@ async def site_command(update: Update, context: CallbackContext):
 # Ana fonksiyon
 def main():
     # Bot tokenini buraya ekle
-    TOKEN = 'YOUR BOT TOKEN HERE'
+    TOKEN = '8174146834:AAFjiRmw1-2QBpL_E4YXWKhNywtTWPKnYtE'
 
     # Botu oluştur
     application = Application.builder().token(TOKEN).build()
