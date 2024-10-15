@@ -50,7 +50,8 @@ def main():
     dp.add_handler(CommandHandler('site', site_command))
 
     # !site yazıldığında algılayan mesaj işleyici
-    dp.add_handler(MessageHandler(Filters.text & Filters.regex('^!site$') & Filters.chat(GROUP_CHAT_ID), handle_text))
+    dp.add_handler(MessageHandler(filters.TEXT & filters.Regex('^!site$'), handle_text))
+
 
     # Botu çalıştır
     updater.start_polling()
