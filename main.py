@@ -1,24 +1,19 @@
-from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup
-from telegram.ext import Updater, CommandHandler, MessageHandler, Filters, CallbackContext
+from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup, filters
+from telegram.ext import Application, CommandHandler, MessageHandler, CallbackContext
 
-# Bot tokeni
-BOT_TOKEN = '8174146834:AAFjiRmw1-2QBpL_E4YXWKhNywtTWPKnYtE'
+# Grup kimliğini tanımla (örneğin -1002188591527)
+GROUP_CHAT_ID = -1002188591527  # Buraya grup kimliğini ekleyin
 
-# Grup kimliğini buraya yaz
-GROUP_CHAT_ID = -1002188591527  # Bu senin gruptan aldığın chat_id
-
-
-# !site veya /site komutu çalıştırıldığında yanıt verecek fonksiyon
-def site_command(update: Update, context: CallbackContext):
-    # Sadece belirli grupta komutun çalışmasına izin ver
+# /site ve !site komutu çalıştırıldığında yanıt verecek fonksiyon
+async def site_command(update: Update, context: CallbackContext):
+    # Sadece belirlenen grupta komutun çalışmasına izin ver
     if update.message.chat_id != GROUP_CHAT_ID:
         return
-
+    
     # Butonlar
     buttons = [
         [InlineKeyboardButton(text="👑Stake 10 USDT Bonus Al", url="https://stake.com/?c=9dd9dbc553")],
-        [InlineKeyboardButton(text="👑Slottica %200 Yatırım Bonusu",
-                              url="https://gopartner.link/?a=205678&c=184089&s1=6028")],
+        [InlineKeyboardButton(text="👑Slottica %200 Yatırım Bonusu", url="https://gopartner.link/?a=205678&c=184089&s1=6028")],
         [InlineKeyboardButton(text="👑Mostbet Toplam 150,000 TL Bonus", url="https://t.ly/eAL_1")],
         [InlineKeyboardButton(text="🎲Lightning Rulet İstatistik", url="https://t.me/rouletteacademystatistics")],
         [InlineKeyboardButton(text="🎲Baccarat Tahmin Bot", url="https://t.me/academybaccarat_bot")],
@@ -30,35 +25,24 @@ def site_command(update: Update, context: CallbackContext):
     keyboard = InlineKeyboardMarkup(buttons)
 
     # Yanıt olarak butonları gönder
-    update.message.reply_text('Önerilen En Güvenilir Siteler', reply_markup=keyboard)
+    await update.message.reply_text('Aşağıdaki butonlar ile istediğiniz sayfaya gidebilirsiniz:', reply_markup=keyboard)
 
-
-# !site yazıldığında algılayan mesaj işleyici
-def handle_text(update: Update, context: CallbackContext):
-    if update.message.text == '!site':
-        site_command(update, context)
-
-
+# Ana fonksiyon
 def main():
-    # Botu başlat
-    updater = Updater(BOT_TOKEN, use_context=True)
+    # Bot tokenini buraya ekle
+    TOKEN = '8174146834:AAFjiRmw1-2QBpL_E4YXWKhNywtTWPKnYtE'
 
-    # Dispatcher, botun komutları dinlemesi için kullanılır
-    dp = updater.dispatcher
+    # Botu oluştur
+    application = Application.builder().token(TOKEN).build()
 
-    # /site komutunu dinle (standart komut çalışır)
-    dp.add_handler(CommandHandler('site', site_command))
+    # /site komutunu dinle
+    application.add_handler(CommandHandler('site', site_command))
 
-    # !site yazıldığında algılayan mesaj işleyici
-    dp.add_handler(MessageHandler(filters.TEXT & filters.Regex('^!site$'), handle_text))
-
+    # !site yazıldığında dinle (mesaj işleyici)
+    application.add_handler(MessageHandler(filters.TEXT & filters.Regex('^!site$'), site_command))
 
     # Botu çalıştır
-    updater.start_polling()
-
-    # Botu sürekli çalıştır
-    updater.idle()
-
+    application.run_polling()
 
 if __name__ == '__main__':
     main()
